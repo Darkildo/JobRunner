@@ -5,6 +5,7 @@ import (
 	storage2 "JobRunner/internal/storage"
 	http2 "JobRunner/internal/transport/http"
 	"context"
+	"errors"
 	"log"
 	"net/http"
 	"os"
@@ -35,7 +36,7 @@ func main() {
 
 	go func() {
 		log.Println("Starting server on port 8080")
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatalf("Server error: %v", err)
 		}
 	}()
